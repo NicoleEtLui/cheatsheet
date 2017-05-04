@@ -10,6 +10,7 @@
 * [Identity](#identity)
 * [Security](#security)
 * [SSH](#ssh)
+* [Routing](#routing)
 #### Configuration mode <a id="nomAncre"></a>
 <a id="userMode"></a>
 * `Router>` user EXEC mode  
@@ -40,20 +41,17 @@
   * `shutdown` désactive une interface, souvent utilisée dans sa version négative `no shutdown` pour activer l'interface.
 
 <a id="routingMode"></a>
-* `Router(config-router)#` routing configuration mode
+* `Router(config-router)#` routing configuration mode. 
 #### Identity <a id="identity"></a>
 * `hostname` nom de la machine dans le domaine
 * `ip domain-name +nom-du-domaine` configure le nom du serveur dns, utiliser avec
 `ip name-server +ip` configure l'ip du serveur DNS.
 * `banner login #message#` Message qui apparaitra a la console si quelqu'un tente de se logger sur la machine, avant toute démarche de log. Il est possible d'utiliser n'importe quel caractère d'ouverture et de fermeture du message, ici '#'.
-
 * `username admin privilege 15 secret cisco` enregistre un utilisateur *admin* de privilege *15* ( le plus haut ) dont le mot de passe est *secret*.
 
 #### Security  <a id="security"></a>
 * `enable password +pswd` oblige le controle d'un mot de passe pour entrer en mode de configuration privilégié. [Possible de passer en option un mot de passe encrypté mais seulement de type 5 ou déja encrypté par du matos cisco.](http://www.cisco.com/c/en/us/td/docs/ios/12_2/security/command/reference/fsecur_r/srfpass.html)
-
 * `enable secret +pswd` ajout une couche de sécurité en plus de `enable password` et annule le paswd configuré la possibilité d'utiliser le paswd de ce dernier !
-
 * `service password-encryption` ecnrypte les password, ils ne seront plus visibles en clair dans des `sh run` par exemple.
 
 #### SSH    <a id="ssh"></a>
