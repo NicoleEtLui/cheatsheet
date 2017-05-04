@@ -6,6 +6,7 @@
   * [config global](#globalMode)
   * [config line](#lineMode)
   * [config interface](#interfaceMode)
+  * [config routage](#routingMode)
 * [Identity](#identity)
 * [Security](#security)
 * [SSH](#ssh)
@@ -38,8 +39,8 @@
   * `clock rate` définit le clock rate **seulement nécessaire sur une liaison série !**
   * `shutdown` désactive une interface, souvent utilisée dans sa version négative `no shutdown` pour activer l'interface.
 
-<a id="interfaceMode"></a>
-* `Router(config-router)#` routing configuration mode 
+<a id="routingMode"></a>
+* `Router(config-router)#` routing configuration mode
 #### Identity <a id="identity"></a>
 * `hostname` nom de la machine dans le domaine
 * `ip domain-name +nom-du-domaine` configure le nom du serveur dns, utiliser avec
