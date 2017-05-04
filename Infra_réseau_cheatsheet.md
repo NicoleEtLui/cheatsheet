@@ -1,9 +1,12 @@
 ### INFRASTRUCTURE RESEAU - NETWORK INFRASTRUCTURE
 #### Sommaire
 * [Mode de configuration](#confMode)
+  * [user](#userMode)
 * [Identity](#identity)
+* [Security](#security)
+* [SSH](#ssh)
 #### Configuration mode <a id="nomAncre"></a>
-* `Router>` user EXEC mode  
+* `Router>` user EXEC mode  <a id="userMode"></a>
   * `enable` passer au mode de conf supérieur
 
 
@@ -32,14 +35,14 @@
 
 * `username admin privilege 15 secret cisco` enregistre un utilisateur *admin* de privilege *15* ( le plus haut ) dont le mot de passe est *secret*.
 
-#### Security  
+#### Security  <a id="security"></a>
 * `enable password +pswd` oblige le controle d'un mot de passe pour entrer en mode de configuration privilégié. [Possible de passer en option un mot de passe encrypté mais seulement de type 5 ou déja encrypté par du matos cisco.](http://www.cisco.com/c/en/us/td/docs/ios/12_2/security/command/reference/fsecur_r/srfpass.html)
 
 * `enable secret +pswd` ajout une couche de sécurité en plus de `enable password` et annule le paswd configuré la possibilité d'utiliser le paswd de ce dernier !
 
 * `service password-encryption` ecnrypte les password, ils ne seront plus visibles en clair dans des `sh run` par exemple.
 
-#### SSH    
+#### SSH    <a id="ssh"></a>
 ###### configuration globale
 `#crypto key generate rsa 2048 `
 Génère une clé rsa de 2048 bit, le 2048 est a placé après !
