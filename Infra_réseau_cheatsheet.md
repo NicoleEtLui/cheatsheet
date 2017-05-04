@@ -81,7 +81,9 @@ ex :
 R4(config-if)# router ospf 2
 R4(config-router)# network 192.168.99.0 0.0.0.255 area 0
 R4(config-router)# network 192.168.254.251 0.0.0.0 area 0
-R4(config-router)# network 172.16.99.0 0.0.0.255 area 2 ```
+R4(config-router)# network 172.16.99.0 0.0.0.255 area 2
+```
+
 
 * `area +n°` paramètre de la zone 'n°'
   * `stub` en faire une zone 'stubby'
