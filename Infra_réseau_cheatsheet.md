@@ -11,6 +11,9 @@
 * [Security](#security)
 * [SSH](#ssh)
 * [Routing](#routing)
+  * [OSPF](#OSPF)
+  * [EIGRP](#EIGRP)
+
 #### Configuration mode <a id="nomAncre"></a>
 <a id="userMode"></a>
 * `Router>` user EXEC mode  
@@ -20,7 +23,8 @@
 * `Router#` privileged EXEC mode    
   * `configure terminal` passer au mode de conf supérieur
   * `no ip domain-lookup` désactive la résolution de nom, donc quand il ne connait pas une commande, il ne va pas tenter de résoudre cette commande comme si c'était une machine du réseau et tenter de la joindre.
-
+  * `show protocols` information de couche 2 et 3 comme `show ip interface brief` mais avec la présence du subnet mask en plus.
+  * `show ip protocols` montre des informations sur les différents protocoles de routage configurés
 <a id="globalMode"></a>
 * `Router(config)#` global configuration mode    
   * `interface ...` enter (sub-)interface configuration mode  
@@ -41,7 +45,12 @@
   * `shutdown` désactive une interface, souvent utilisée dans sa version négative `no shutdown` pour activer l'interface.
 
 <a id="routingMode"></a>
-* `Router(config-router)#` routing configuration mode. 
+* `Router(config-router)#` routing configuration mode.
+  * `network +ip +wildcardMask` annonce un réseau connu en tant qu'information de routage.
+  * `passive-interface +interface` permet d'empêcher l'envoi d'information de routage sur li'nterface précisée. Ce sont énormément d'informations sur le réseaux qui sont transmises il est donc bon de réduire au maximum la portée de ces transmissions la où ce n'est pas nécessaire.
+  * `redistribute` permet de transmettre les infos concernant un protocole différents ou des routes statiques. Plus de précision dans [routing](#routing).
+
+
 #### Identity <a id="identity"></a>
 * `hostname` nom de la machine dans le domaine
 * `ip domain-name +nom-du-domaine` configure le nom du serveur dns, utiliser avec
@@ -61,3 +70,30 @@ Génère une clé rsa de 2048 bit, le 2048 est a placé après !
 
 ###### configuration ligne vty
 `transport input ssh` n'autorise la connexion à cette ligne que via ssh.
+
+#### Routing <a id="routing"></a>
+###### OSPF <a id="OSPF"></a>
+* `router ospf 1` ici le numéro de process n'a pas d'importance, il n'a qu'une portée locale (contrairement à EIGRP ou il désignera le numéro d'AS, Système Autonome).
+* Quand on déclare un réseau avec la commande ``network``, il est important de préciser l'area dans laquelle il se trouve. Ainsi pour des routeurs "interne" à une zone, on ne déclarera que des réseaux d'une même zone.
+Par contre un **ABR** (Area Border Router), déclarera des réseaux de plusieurs zone.
+ex :
+```
+R4(config-if)# router ospf 2
+R4(config-router)# network 192.168.99.0 0.0.0.255 area 0
+R4(config-router)# network 192.168.254.251 0.0.0.0 area 0
+R4(config-router)# network 172.16.99.0 0.0.0.255 area 2 ```
+
+* `area +n°` paramètre de la zone 'n°'
+  * `stub` en faire une zone 'stubby'
+  * `nssa` en faire une zone 'not so stubby'
+  * `range` résumé de route (ABR seulement)
+* `default-information originate` redistribue les informations concernant la route par défaut seulement (seulement si il s'en trouve une dans la table de routage).
+* `redistribute static subnets` permet de redistribuer de routes vers un un réseau (un ancien réseau par exemple, qui n'utiliserait pas OSPF mais relié à une zone OSPF) qu'elles soit classfull ou non.
+
+* en OSPF il peut-être interessant de définir un ID (pour l'élection DR-BDR) au moyen d'une interface de loopback, `interface l0`.
+* en mode privilégié, quelque commandes intéressantes :
+  * `show ip route` table de routage
+  * `show ip ospf neighbor` table de voisinage
+  * ``
+
+###### EIGRP <a id="EIGRP"></a>
