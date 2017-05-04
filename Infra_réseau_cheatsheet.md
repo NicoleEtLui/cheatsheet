@@ -19,16 +19,19 @@
   * `configure terminal` passer au mode de conf supérieur
   * `no ip domain-lookup` désactive la résolution de nom, donc quand il ne connait pas une commande, il ne va pas tenter de résoudre cette commande comme si c'était une machine du réseau et tenter de la joindre.
 
-
+<a id="globalMode"></a>
 * `Router(config)#` global configuration mode    
   * `interface ...` enter (sub-)interface configuration mode  
   * `router ...` enter routing configuration mode  
 
-
+<a id="lineMode"></a>
 * `Router(config-line)#` line configuration mode
   * `login local` demande l'authentification par password lors d'une connection en local (directement sur la machine).
-  * `transport input ssh` voir SSH.
+  * `logging synchronous` synchronise les logs de cette ligne avec le terminal de la machine. Il est possible de régler le niveau de level des logs que l'on veut afficher
+  * `transport input ssh` voir [SSH](#ssh).
 
+<a id="interfaceMode"></a>
+* `Router(config-interface)#` interface configuration mode
 
 #### Identity <a id="identity"></a>
 * `hostname` nom de la machine dans le domaine
