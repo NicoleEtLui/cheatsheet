@@ -9,7 +9,14 @@ simplifié : `<!doctype html>`.
 
 
 
-
+#### Liens
+##### ancre
+```
+<!--lien interne vers le titre-->
+<a href="#nomAncre">lien afficher</a>
+<!--titre-->
+<h2 id="nomAncre">titre</h2>
+```
 #### <canvas></canvas>
 
 ```
@@ -29,12 +36,12 @@ simplifié : `<!doctype html>`.
 </body>
 ...
 ```
-##### Remarque 
+##### Remarque
 
 * une ligne ne se dessinera que lorsqu'on a déclaré contexte.stroke(), de même une forme n'apparaitra qu'après un fill();
 
 
-##### function 
+##### function
 
 * `canvas.getContext()` renvoie un 'contexte de dessin' en fonction du type de contexte demandé (2d, webgl, ...)
 
@@ -42,16 +49,16 @@ simplifié : `<!doctype html>`.
 
 * `context.closePath()` relie le dernier point ou on est allé au point défni par le dernier moveTo().
 
-* `context.beginPath` permet de reset le moveTo, et donc de commencer une nouvelle forme et que un `closePath()` 
+* `context.beginPath` permet de reset le moveTo, et donc de commencer une nouvelle forme et que un `closePath()`
 ne relierait pas les deux ensembles.
 
 
-##### LoadImage 
+##### LoadImage
 
-* To draw an image using HTML5 Canvas, we can use the drawImage() method which requires an image object 
-and a destination point. The destination point defines the top left corner of the image relative to the top 
+* To draw an image using HTML5 Canvas, we can use the drawImage() method which requires an image object
+and a destination point. The destination point defines the top left corner of the image relative to the top
 left corner of the canvas.
-Since the drawImage() method requires an image object, we must first create an image and wait for it 
+Since the drawImage() method requires an image object, we must first create an image and wait for it
 to load before instantiating drawImage().  We can accomplish this by using the onload property of the image object.
 
 ```
@@ -66,7 +73,7 @@ to load before instantiating drawImage().  We can accomplish this by using the o
     </script>
 ```
 
-* To load the canvas with an image data URL, we can make an AJAX call to get a data URL, create an image object with the URL, 
+* To load the canvas with an image data URL, we can make an AJAX call to get a data URL, create an image object with the URL,
 and then draw the image onto the canvas with the drawImage() method of the canvas context.
 
 ```
@@ -83,7 +90,7 @@ and then draw the image onto the canvas with the drawImage() method of the canva
 
         imageObj.src = dataURL;
       }
-      
+
       // make ajax call to get image data url
       var request = new XMLHttpRequest();
       request.open('GET', 'http://www.html5canvastutorials.com/demos/assets/dataURL.txt', true);
@@ -101,6 +108,6 @@ and then draw the image onto the canvas with the drawImage() method of the canva
     </script>
 ```
 
-* To crop an image using HTML5 Canvas, we can add six additional arguments to the drawImage() method, sourceX, 
-sourceY, sourceWidth, sourceHeight, destWidth and destHeight. These arguments define the location and size of a 
+* To crop an image using HTML5 Canvas, we can add six additional arguments to the drawImage() method, sourceX,
+sourceY, sourceWidth, sourceHeight, destWidth and destHeight. These arguments define the location and size of a
 rectangle that we want to cut out of an image.
