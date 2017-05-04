@@ -10,11 +10,12 @@
 * [Security](#security)
 * [SSH](#ssh)
 #### Configuration mode <a id="nomAncre"></a>
-* `Router>` user EXEC mode  <a id="userMode"></a>
+<a id="userMode"></a>
+* `Router>` user EXEC mode  
   * `enable` passer au mode de conf supérieur
 
-
-* `Router#` privileged EXEC mode  <a id="privilegedMode"></a>  
+<a id="privilegedMode"></a>
+* `Router#` privileged EXEC mode    
   * `configure terminal` passer au mode de conf supérieur
   * `no ip domain-lookup` désactive la résolution de nom, donc quand il ne connait pas une commande, il ne va pas tenter de résoudre cette commande comme si c'était une machine du réseau et tenter de la joindre.
 
