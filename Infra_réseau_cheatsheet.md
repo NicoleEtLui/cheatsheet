@@ -1,6 +1,7 @@
 ### INFRASTRUCTURE RESEAU - NETWORK INFRASTRUCTURE
 #### Sommaire
 * [Mode de configuration](#confMode)
+* [Identity](#identity)
 #### Configuration mode <a id="nomAncre"></a>
 * `Router>` user EXEC mode  
   * `enable` passer au mode de conf supérieur
@@ -21,7 +22,7 @@
   * `transport input ssh` voir SSH.
 
 
-#### Identity
+#### Identity <a id="identity"></a>
 * `hostname` nom de la machine dans le domaine
 
 * `ip domain-name +nom-du-domaine` configure le nom du serveur dns, utiliser avec
