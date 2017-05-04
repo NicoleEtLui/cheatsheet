@@ -2,6 +2,10 @@
 #### Sommaire
 * [Mode de configuration](#confMode)
   * [user](#userMode)
+  * [privileged](#privilegedMode)
+  * [config global](#globalMode)
+  * [config line](#lineMode)
+  * [config interface](#interfaceMode)
 * [Identity](#identity)
 * [Security](#security)
 * [SSH](#ssh)
@@ -10,7 +14,7 @@
   * `enable` passer au mode de conf supérieur
 
 
-* `Router#` privileged EXEC mode    
+* `Router#` privileged EXEC mode  <a id="privilegedMode"></a>  
   * `configure terminal` passer au mode de conf supérieur
   * `no ip domain-lookup` désactive la résolution de nom, donc quand il ne connait pas une commande, il ne va pas tenter de résoudre cette commande comme si c'était une machine du réseau et tenter de la joindre.
 
