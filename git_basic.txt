@@ -1,0 +1,83 @@
+https://openclassrooms.com/courses/gerez-vos-codes-source-avec-git
+https://try.github.io
+
+git config --global color.diff auto
+git config --global color.status auto
+git config --global color.branch auto // conf a couleur des messages en consoles
+
+git config --global user.name "NicoleEtLui"
+git config --global user.mail petit.martin125@gmail.com
+
+
+
+// toutes les configs se retrouvent dans un fichier .gitconfig a la racine 
+// chez moi dans B: 
+
+git init // dans un fichier crée un repo git = crée un fichier caché .git contenant la conf de git
+
+//apres la création d'un repo vide sur github par exemple || sur un serveur autre
+git remote add origin URL // ajouter le repo distant pour pouvoir push notre repo local plus tard 
+
+git status // état du repo local par rapport au repo en ligne 
+git diff // voir les différences amenée par rapport au repo en ligne
+  git diff pathname // voir les différences sur 1 fichier en particulier
+
+git add nomfichier1 nomfichier2 // des nouveaux fichier a commit que git ne connait pas 				encore
+git commit // après un git add
+git commit -a // tout commit
+git commit nomfichier1 nomfichier2 // pour indiquer lors du commit les fichiers précis a 				   commit
+git commit -m "message" // pour spécifier le message du commit
+
+git log // historique des commits, ...
+git log -p  // détail de ce qui a changé
+git log --stat // meme chose mais plus succint
+
+//juste apres un commit
+git -amend // changer le message du commit 
+git reset HEAD // annule le dernier commit 
+	  HEAD^ // avant -dernier commit
+	  HEAD^^ // avant-avan dernier commit
+	  /!\ les fichiers restent changés, seul le commit est annulé
+git reset --hard HEAD // annule le commit ET tous les changements sans confirmation
+	  HEAD^
+	  HEAD^^
+
+git checkout // avant un commit permet d'annuler les modifs sur le fichier
+git reset HEAD --fichier_a_supprimer // retire un fichier qui avait ajouté pour être commit
+
+git pull// download les nouvelles modis effectuée par d'autres
+	---> màj fast-forward si aucune modif perso depuis le dernier pull
+	---> fusion intelligente des fichiers ---> si conflit, rechercher une ligne contenant 	"<<<<<<<" et gérer les changements à garder 
+
+
+git push -u origin master // origin = name of the remote repo, master = name of the default 	local branch, -u = save this parameters to allow just --->git push 
+git push // envoie les commits sur le serveur
+	---> le changement DOIT être de type fast-forward ---> pull avant de push
+	/!\ un push est irréversible ! impossible de supprimer un commit ou d'en modifier le 	message
+	---> pas de push trop régulier
+
+git revert commit_ID // crée un commit d'annulation du dernier commit, une fois push le dernier 		commit sera annulé ( les 6 premiers chiffres du commit_iD sont sensé être suffisant)
+
+git branch // affiche les branches locales 
+git branch nom_de_la_nouvelle_branche // crée une branche locale 
+git checkout nom_de_la_branche // bascule sur une branche 
+git merge // fusionne la branche avec master
+	/!\ il faut être dans la branche "finale" pour intégrer la branche "secondaire
+	---> git checkout master 
+	---> git merge branche_a_fusionne_avec_master
+git branch -d nom_de_la_branche // delette branche // -D si delete absolu
+
+git stash // sauve les changements sans avoir commit etpermet de changer de branche sans avoir 	commit avant 
+git stash apply // récupère les changements sauvegardés sans avoir commit, une fois de retour 		sur la branche
+
+git tag NOMTAG IDCOMMIT // ajoute un tag("alias") sur un commit
+	/!\ il faut préciser le tag lors du push
+	---> git push --tags
+	---> on peut référencer le commit par un tag plutot que par son numero de révision
+git tag -d NOMTAG // delete le tag
+
+git grep "STRING_A_RECHERCHER" // renvoie les fichiers contenant le string précisé et son 	emplacement dans le code
+git grep -n "STRING" // ajoute le numéro de ligne de la recherche
+
+git
+
