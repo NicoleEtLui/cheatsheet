@@ -23,6 +23,7 @@
 * `Router(config)#` global configuration mode    
   * `interface ...` enter (sub-)interface configuration mode  
   * `router ...` enter routing configuration mode  
+  * `line ...` enter line mode configuration (console or vty)
 
 <a id="lineMode"></a>
 * `Router(config-line)#` line configuration mode
@@ -32,13 +33,17 @@
 
 <a id="interfaceMode"></a>
 * `Router(config-interface)#` interface configuration mode
+  * `description +msg` Pas de règles quant à la forme du msg, pas besoin de délimiteur.
+  * `ip address +ip +mask` adresse de l'interface
+  * `clock rate` définit le clock rate **seulement nécessaire sur une liaison série !**
+  * `shutdown` désactive une interface, souvent utilisée dans sa version négative `no shutdown` pour activer l'interface.
 
+<a id="interfaceMode"></a>
+* `Router(config-router)#` routing configuration mode 
 #### Identity <a id="identity"></a>
 * `hostname` nom de la machine dans le domaine
-
 * `ip domain-name +nom-du-domaine` configure le nom du serveur dns, utiliser avec
-`ip name-server +ip` qui identifie l'ip du serveur DNS.
-
+`ip name-server +ip` configure l'ip du serveur DNS.
 * `banner login #message#` Message qui apparaitra a la console si quelqu'un tente de se logger sur la machine, avant toute démarche de log. Il est possible d'utiliser n'importe quel caractère d'ouverture et de fermeture du message, ici '#'.
 
 * `username admin privilege 15 secret cisco` enregistre un utilisateur *admin* de privilege *15* ( le plus haut ) dont le mot de passe est *secret*.
