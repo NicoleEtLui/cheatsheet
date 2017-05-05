@@ -13,9 +13,18 @@
 * [SSH](#ssh)
 * [VLAN](#vlan)
   * [Création](#creation)
+  * [Configuration interfaces](#interfacevlan)
+
   * [Routage inter-Vlan](#intervlan)
     * [Router](#subif)
+      * [IP vlan](#ipvlan_1)
+      * [Access](#access_1)
+      * [Trunk](#trunk_1)
     * [Switch Layer 3](#vlanL3)
+      * [IP vlan](#ipvlan_2)
+      * [Access](#access_2)
+      * [Trunk](#trunk_2)
+* [STP](#stp)
 * [Routing](#routing)
   * [RIP](#RIP)
   * [OSPF](#OSPF)
@@ -86,10 +95,45 @@ Génère une clé rsa de 2048 bit, le 2048 est a placé après !
 
 #### VLAN <a id=vlan></a>
 #### Création <a id=creation></a>
-* sur un switch (L2 ou L3), `vlan +num` entrer en mode de configuration de ce vlan ([voir](#confvlan)).
+* sur un switch (L2 ou L3), `vlan +num` entrer en mode de configuration de ce vlan ([voir configuration mode vlan](#confvlan)).
+
+* il peut être intéressant de créer un vlan "poubelle", dans lequel on mettra toutes les interfaces n'appartenant à aucun vlan.
+* il est bon de change le vlan natif (par défaut c'est le 1), mais ne pas désactiver le 1 car c'est par la que les premières attaques viendront. Et surtout c'est par le vlan 1 que STP passe. (VLAN 1 ou natif quel qu'il soit ???)
+* si l'interface de vlan est up-down, c'est qu'aucune interface réelle n'est incluse à ce vlan.
+* Chez cisco, tous les vlans sont par défaut autorisés sur les trunks. Seulement chez cisco !!
+
 #### Routage inter-vlan <a id=intervlan></a>
-###### Router <a id="subif"></a>
-###### Layer 3 <a id="vlanL3"></a>
+##### Router <a id="subif"></a>
+###### Ip vlan <a id="ipvlan_1"></a>
+* Une sous interface par vlan
+```
+interface f0/0.20
+  ip address 192.168.20.1 255.255.255.0
+  ...
+interface f0/0.30
+    ip address 192.168.30.1 255.255.255.0
+  ...
+```
+###### mode access <a id="access_1"></a>
+* sur un switch L2 ou L3
+```
+interface F0/1/1
+  switchport mode access
+  switchport access vlan 20
+  ...
+```
+
+###### mode Trunk <a id="trunk_1"></a>
+```
+interface G0/2
+  switchport mode trunk
+  switchport trunk native vlan 50
+  ...
+```
+
+##### Layer 3 <a id="vlanL3"></a>
+* il est important de désactiver la fonction de switching sur l'interface d'un L3 connecté à un autre routeur `(config-interface)#no switchport`.
+###### Ip vlan <a id="ipvlan_2"></a>
 * Comme un layer 3 possède plusieurs SVI (Switch Virtual Interface), on peut attribuer une ip par interface de VLAN.
 ```
 interface vlan 20
@@ -101,6 +145,14 @@ interface vlan 30
   ip address 192.168.30.254 255.255.255.0
   ...
 ```
+###### Access <a id="access_2"></a>
+* [Voir L2](#access_1)
+###### Trunk <a id="trunk_2"></a>
+* **Sur un L3**, il faut utiliser une ancienne commande pour configurer le trunk `switchport trunk encapsulation dot1q`, le reste est [pareil qu'avec un L2](#trunk_1)
+
+
+
+
 
 #### ROUTING <a id="routing"></a>
 ###### RIP <a id="RIP"></a>
