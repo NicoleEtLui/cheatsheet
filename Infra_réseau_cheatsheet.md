@@ -117,18 +117,20 @@ interface f0/0.30
 ###### mode access <a id="access_1"></a>
 * sur un switch L2 ou L3
 ```
-interface F0/1/1
-  switchport mode access
-  switchport access vlan 20
-  ...
+Switch(config)#interface F0/1/1
+Switch(config-interface)#switchport mode access
+Switch(config-interface)#switchport access vlan 20
+
 ```
 
 ###### mode Trunk <a id="trunk_1"></a>
 ```
-interface G0/2
-  switchport mode trunk
-  switchport trunk native vlan 50
+Switch(config)#interface G0/2
+Switch(config-interface)#switchport mode trunk
+Switch(config-interface)#switchport trunk native vlan 50
   ...
+Router(config)#interface f0/0.10
+Router(config-subif)#encapsulation dot1q 10
 ```
 
 ##### Layer 3 <a id="vlanL3"></a>
