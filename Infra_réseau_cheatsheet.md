@@ -30,6 +30,7 @@
   * [OSPF](#OSPF)
   * [EIGRP](#EIGRP)
   * [Vieux matos](#old)
+* [DHCP](#dhcp)
 
 #### MODE <a id="nomAncre"></a>
 <a id="userMode"></a>
@@ -72,6 +73,9 @@
   * `passive-interface +interface` permet d'empêcher l'envoi d'information de routage sur li'nterface précisée. Ce sont énormément d'informations sur le réseaux qui sont transmises il est donc bon de réduire au maximum la portée de ces transmissions la où ce n'est pas nécessaire.
   * `redistribute` permet de transmettre les infos concernant un protocole différents ou des routes statiques. Plus de précision dans [routing](#routing).
 
+#### NETTOYAGE
+* `erase start-up config`
+* `delete vlan.dat` ou `delete flash:vlan.dat` ???
 
 #### IDENTITY <a id="identity"></a>
 * `hostname` nom de la machine dans le domaine
@@ -85,8 +89,18 @@
 * `enable secret +pswd` ajout une couche de sécurité en plus de `enable password` et annule le paswd configuré la possibilité d'utiliser le paswd de ce dernier !
 * `service password-encryption` ecnrypte les password, ils ne seront plus visibles en clair dans des `sh run` par exemple.
 
+###### [interfaces](http://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst6500/ios/12-2SX/configuration/guide/book/port_sec.pdf)
+
+* `switchport port-security` active les modifications de sécurité ! Si pas tapée, rien n'agit
+* `switchport port-security mac-adress +mac-adress` autorise une mac-adress sur cette interface
+* `switchport port-security mac-adress sticky` autorise dynamiquement la mac-adress captée sur cette interface
+* `switchport port-security max +num` définit le nombre max de mac-adress gardé en mémoire, si le nombre est atteint, plus aucune adresse ne peut être autorisé de quelque manière que ce soit
+* `switchport port-security violation` définit le type de comportement en cas de violation
+
 #### SSH    <a id="ssh"></a>
 ###### configuration globale
+`ip ssh version 2` Pretty clear ...
+
 `#crypto key generate rsa 2048 `
 Génère une clé rsa de 2048 bit, le 2048 est a placé après !
 
@@ -103,14 +117,17 @@ Génère une clé rsa de 2048 bit, le 2048 est a placé après !
 * Chez cisco, tous les vlans sont par défaut autorisés sur les trunks. Seulement chez cisco !!
 
 #### Routage inter-vlan <a id=intervlan></a>
-##### Router <a id="subif"></a>
+##### Sur un router <a id="subif"></a>
 ###### Ip vlan <a id="ipvlan_1"></a>
-* Une sous interface par vlan
+* Une sous interface par vlan, attention, l'encapsulation dot1q doit être faite avant pour qu'on puisse donner une ip a nos sous-interfaces
+`encapsulation dot1q +numVlan +[native]` 
 ```
 interface f0/0.20
-  ip address 192.168.20.1 255.255.255.0
+    encapsulation dot1q 20 
+    ip address 192.168.20.1 255.255.255.0
   ...
 interface f0/0.30
+    encapsulation dot1q 30
     ip address 192.168.30.1 255.255.255.0
   ...
 ```
@@ -122,18 +139,15 @@ Switch(config-interface)#switchport mode access
 Switch(config-interface)#switchport access vlan 20
 
 ```
-
 ###### mode Trunk <a id="trunk_1"></a>
+
 ```
 Switch(config)#interface G0/2
 Switch(config-interface)#switchport mode trunk
 Switch(config-interface)#switchport trunk native vlan 50
-  ...
-Router(config)#interface f0/0.10
-Router(config-subif)#encapsulation dot1q 10
 ```
 
-##### Layer 3 <a id="vlanL3"></a>
+##### Sur un layer 3 <a id="vlanL3"></a>
 * il est important de désactiver la fonction de switching sur l'interface d'un L3 connecté à un autre routeur `(config-interface)#no switchport`.
 ###### Ip vlan <a id="ipvlan_2"></a>
 * Comme un layer 3 possède plusieurs SVI (Switch Virtual Interface), on peut attribuer une ip par interface de VLAN.
@@ -187,3 +201,7 @@ R4(config-router)# network 172.16.99.0 0.0.0.255 area 2
 
 ###### EIGRP <a id="EIGRP"></a>
 ###### Vieux matos <a id="old"></a>
+
+#### DHCP <a id="dhcp"></a>
+* `ip dhcp pool +nom`
+  * `network 192.168.0.0 255.255.255.0`
