@@ -31,8 +31,8 @@
   * [Vieux matos](#old)
 * [DHCP](#dhcp)
 * [NAT](#nat)
-  * statique
-  * dynamique
+  * [statique](#natSt)
+  * [dynamique](#natDyn)
 
 #### MODE <a id="nomAncre"></a>
 <a id="userMode"></a>
@@ -217,7 +217,7 @@ R4(config-router)# network 172.16.99.0 0.0.0.255 area 2
 
 [NAT simplifiée](https://campus-virtuel.ephec.be/sites/2016_HE_T2032_9366_L2/_layouts/15/WopiFrame.aspx?sourcedoc=/sites/2016_HE_T2032_9366_L2/Documents/IRBP%20Semaine%2011/NAT%20version%20simplifi%C3%A9e/NAT_version%20du%207-12-2016.pdf&action=default)
 
-###### statique
+###### statique <a id="natSt"></a>
 
 * en statique on associe une adresse ip interne privée à une adresse publique, utile par exemple quand on a besoin d'atteindre un serveur toujours à la même adresse. 
 Il faut préciser sur le routeur NAT quel interface est en inside et quelle interface est en outside et puis déclarer la NAT proprement dite
@@ -234,7 +234,7 @@ ip nat outside
 ip nat inside source static 10.0.0.2 202.0.5.1
 ```
 
-###### dynamique
+###### dynamique <a id="natDyn"></a>
 
 * PAT (surcharge de port, une seule ip publique)
 
@@ -255,6 +255,7 @@ access-list 1 permit 10.0.0.0 0.0.0.255
 * POOL d'adresses publiques
 
 ```
+! attention a bien toujours configurer vos interfaces in et out 
 ip nat pool TOTO 201.10.10.1 201.10.10.2 netmask 255.255.255.0
 ip nat inside source list 1 pool TOTO overload
 access-list 1 permit 10.0.0.0 0.0.0.255
