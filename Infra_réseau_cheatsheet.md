@@ -138,12 +138,14 @@ interface f0/0.30
 ```
 ###### mode access <a id="access_1"></a>
 * sur un switch L2 ou L3
+
 ```
 Switch(config)#interface F0/1/1
 Switch(config-interface)#switchport mode access
 Switch(config-interface)#switchport access vlan 20
 
 ```
+
 ###### mode Trunk <a id="trunk_1"></a>
 
 ```
@@ -231,4 +233,29 @@ ip nat outside
 ...
 ip nat inside source static 10.0.0.2 202.0.5.1
 ```
+
 ###### dynamique
+
+* PAT (surcharge de port, une seule ip publique)
+
+```
+interface GigabitEthernet0/0
+...
+ip nat inside
+!
+interface GigabitEthernet0/1
+...
+ip nat outside
+!
+ip nat inside source list 1 interface GigabitEthernet0/1 overload
+!
+access-list 1 permit 10.0.0.0 0.0.0.255
+```
+
+* POOL d'adresses publiques
+
+```
+ip nat pool TOTO 201.10.10.1 201.10.10.2 netmask 255.255.255.0
+ip nat inside source list 1 pool TOTO overload
+access-list 1 permit 10.0.0.0 0.0.0.255
+```
