@@ -14,7 +14,6 @@
 * [VLAN](#vlan)
   * [Création](#creation)
   * [Configuration interfaces](#interfacevlan)
-
   * [Routage inter-Vlan](#intervlan)
     * [Router](#subif)
       * [IP vlan](#ipvlan_1)
@@ -31,6 +30,9 @@
   * [EIGRP](#EIGRP)
   * [Vieux matos](#old)
 * [DHCP](#dhcp)
+* [NAT](#nat)
+  * statique
+  * dynamique
 
 #### MODE <a id="nomAncre"></a>
 <a id="userMode"></a>
@@ -85,6 +87,9 @@
 * `username admin privilege 15 secret cisco` enregistre un utilisateur *admin* de privilege *15* ( le plus haut ) dont le mot de passe est *secret*.
 
 #### SECURITY  <a id="security"></a>
+> certaines commandes de sécurité (notamment pour ssh) ne sont accessibles qu'en activant une license (achetée a cisco bien sure), activable avec la commande 
+`license boot module +numModele technology-package securityk9`, après il faut `copy run start` et puis restrt la machine.
+
 * `enable password +pswd` oblige le controle d'un mot de passe pour entrer en mode de configuration privilégié. [Possible de passer en option un mot de passe encrypté mais seulement de type 5 ou déja encrypté par du matos cisco.](http://www.cisco.com/c/en/us/td/docs/ios/12_2/security/command/reference/fsecur_r/srfpass.html)
 * `enable secret +pswd` ajout une couche de sécurité en plus de `enable password` et annule le paswd configuré la possibilité d'utiliser le paswd de ce dernier !
 * `service password-encryption` ecnrypte les password, ils ne seront plus visibles en clair dans des `sh run` par exemple.
@@ -112,7 +117,7 @@ Génère une clé rsa de 2048 bit, le 2048 est a placé après !
 * sur un switch (L2 ou L3), `vlan +num` entrer en mode de configuration de ce vlan ([voir configuration mode vlan](#confvlan)).
 
 * il peut être intéressant de créer un vlan "poubelle", dans lequel on mettra toutes les interfaces n'appartenant à aucun vlan.
-* il est bon de change le vlan natif (par défaut c'est le 1), mais ne pas désactiver le 1 car c'est par la que les premières attaques viendront. Et surtout c'est par le vlan 1 que STP passe. (VLAN 1 ou natif quel qu'il soit ???)
+* il est bon de change le vlan natif (par défaut c'est le 1), mais ne pas désactiver le 1 car c'est par la que les premières attaques viendront. Et surtout c'est par le vlan 1 que STP passe.
 * si l'interface de vlan est up-down, c'est qu'aucune interface réelle n'est incluse à ce vlan.
 * Chez cisco, tous les vlans sont par défaut autorisés sur les trunks. Seulement chez cisco !!
 
@@ -205,3 +210,25 @@ R4(config-router)# network 172.16.99.0 0.0.0.255 area 2
 #### DHCP <a id="dhcp"></a>
 * `ip dhcp pool +nom`
   * `network 192.168.0.0 255.255.255.0`
+  
+#### NAT <a id="nat"></a> 
+
+[NAT simplifiée](https://campus-virtuel.ephec.be/sites/2016_HE_T2032_9366_L2/_layouts/15/WopiFrame.aspx?sourcedoc=/sites/2016_HE_T2032_9366_L2/Documents/IRBP%20Semaine%2011/NAT%20version%20simplifi%C3%A9e/NAT_version%20du%207-12-2016.pdf&action=default)
+
+###### statique
+
+* en statique on associe une adresse ip interne privée à une adresse publique, utile par exemple quand on a besoin d'atteindre un serveur toujours à la même adresse. 
+Il faut préciser sur le routeur NAT quel interface est en inside et quelle interface est en outside et puis déclarer la NAT proprement dite
+
+```
+interface GigabitEthernet0/0
+...
+ip nat inside 
+
+interface GigabitEthernet0/1
+...
+ip nat outside 
+...
+ip nat inside source static 10.0.0.2 202.0.5.1
+```
+###### dynamique
