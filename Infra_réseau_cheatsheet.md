@@ -23,7 +23,6 @@
       * [IP vlan](#ipvlan_2)
       * [Access](#access_2)
       * [Trunk](#trunk_2)
-* [STP](#stp)
 * [Routing](#routing)
   * [RIP](#RIP)
   * [OSPF](#OSPF)
@@ -33,6 +32,8 @@
 * [NAT](#nat)
   * [statique](#natSt)
   * [dynamique](#natDyn)
+* [STP](#stp)
+* [VTP](#vtp)
 
 #### MODE <a id="nomAncre"></a>
 <a id="userMode"></a>
@@ -184,6 +185,7 @@ interface vlan 30
 * Quand on déclare un réseau avec la commande ``network``, il est important de préciser l'area dans laquelle il se trouve. Ainsi pour des routeurs "interne" à une zone, on ne déclarera que des réseaux d'une même zone.
 Par contre un **ABR** (Area Border Router), déclarera des réseaux de plusieurs zone.
 ex :
+
 ```
 R4(config-if)# router ospf 2
 R4(config-router)# network 192.168.99.0 0.0.0.255 area 0
@@ -204,7 +206,6 @@ R4(config-router)# network 172.16.99.0 0.0.0.255 area 2
 * en mode privilégié, quelque commandes intéressantes :
   * `show ip route` table de routage
   * `show ip ospf neighbor` table de voisinage
-  * ``
 
 ###### EIGRP <a id="EIGRP"></a>
 ###### Vieux matos <a id="old"></a>
@@ -260,3 +261,24 @@ ip nat pool TOTO 201.10.10.1 201.10.10.2 netmask 255.255.255.0
 ip nat inside source list 1 pool TOTO overload
 access-list 1 permit 10.0.0.0 0.0.0.255
 ```
+#### Spanning Tree Protocol <a id="stp"></a> 
+
+> [Spanning Tree Protocol (STP)] is a Layer 2 protocol that runs on bridges and switches.The main purpose of STP is to ensure that you do not create loops when you have redundant paths in your network. Loops are deadly to a network.
+
+**Par défaut, spanning tree tourne sur toutes les interfaces ! Et transmet ses informations via le VLAN 1, qu'il ne faut donc absolument pas fermer !**
+
+* besoin d'un switch référent, un switch "root" qui va être élu par les autres, point central du réseau (un ID plus petit est meilleur !). Toutes les décisions (port bloquant ou forwardant) sont prises en fonction de ce switch. **Chaque vlan doit avoir un root switch qu'il soit logique ou physique**
+Les critères à prendre en compte pour déterminer ce switch : 
+  * centralisé
+  * fiable (pas une partie du réseua souvent perturbée)
+  * le moins influencé par des changements de topologie 
+  
+* `monSwitch(config)#spanning-tree vlan 1 root primary` définit monSwitch comme switch root pour le vlan 1 (priorité de 8192 ???).
+
+* `monSwitch(config)#spanning-tree vlan 1 priority 4096` définit la priorité du switch à 4096 (par défaut à 32768 et par pas de 4096).
+
+* `monSwitch(config)#spannig-tree portfast default` définit portfast sur tous les ports en mode access. ATTENTION : portfast met l'interface en mode forward sans attendre la convergence STP (utile par exemple en cas de DHCP ou le pc peut obtenir une ip avant la fin de la convergence stp) donc en cas de mauvais configuration des interfaces, des boucles de broadcast epuvent apparaitre.
+
+* `show spanning-tree` 
+
+#### Vlan Trunking Protocol <a id="vtp"></a> 
