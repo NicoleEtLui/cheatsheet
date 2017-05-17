@@ -282,3 +282,19 @@ Les critères à prendre en compte pour déterminer ce switch :
 * `show spanning-tree` 
 
 #### Vlan Trunking Protocol <a id="vtp"></a> 
+
+> VLAN Trunk Protocol (VTP) reduces administration in a switched network. When you configure a new VLAN on one VTP server, the VLAN is distributed through all switches in the domain. This reduces the need to configure the same VLAN everywhere. VTP is a Cisco-proprietary protocol that is available on most of the Cisco Catalyst series products.
+
+**Par défaut, tous les switchs sont configuré comme VTP serveurs.**
+
+* tous les switchs doivent avori le même domaine vtp, faire tourner la même version de VTP et avoir le même mot de passe (si il y en a un).
+
+* on peut configurer le vtp en mode de configuration de vlan ou en mode de configuration globale (ici en global).
+
+* `vtp domain +domain-name`
+* `vtp mode +{server | transparent | client }` le serve envoie, le client recoit se synchronise et transmet et le transparent ne fait rien. (transparent permet de faire des modifs vlan en local sans affecter les autres !).
+
+
+
+
+
