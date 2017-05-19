@@ -315,9 +315,32 @@ interface range f0/10-11
 	channel-group 1 mode active
 	exit
 ```
+* `mode active` est la solution safe pour être sure de l'état du port.
 ##### PAGP <a id="pagp"></a>
 
 * propriétaire cisco, la configuration est sensiblement la même ... 
+
+#### HSRP <a id="hsrp"></a>
+
+* Permet le regroupement de deux Switch physique en un switch logique (redondance, remplacement en cas de panne sans changer d'ip, ...).
+* Tout comme vtp,stp et consor, il y aura un switch "root" qui sera dit ACTIF, et l'autre sera en STANDBY? Et cela pour chaque vlan indépendamment (donc c'est pas d'office le même actif et le même passif en fonction du vlan).
+* Cisco considère qu'il est mieux de tout faire passer tout par un seul switch et de laisser l'autre en standby total. Schalkwijk estime qu'il y a plein de raison de ne pas faire comme ça (rien que le fait qu'on laisse un Layer 3 rien foutre alors que c'est du matos dingue en est une bonne).
+
+```
+...
+interface vlan 90
+	ip address 10.1.90.252 255.255.255.0
+	standby 90 ip 10.1.90.254
+	standby 90 priority 100
+	standby 90 preempt
+	no shut 
+	exit
+...
+```
+* `standby 90` définit le groupe hsrp concerné
+* `ip x.x.x.x` correspond à l'adresse ip virtuelle du switch logique créé
+* `priority <0-255>`définit le poids à devenir actif (plus grand = meilleur)
+* `preempt` permet de recalculer l'actif et le standby si une priorité supérieure apparait (en cas de retour du switch principal qui aurait crashé par exemple)
 
 
 
