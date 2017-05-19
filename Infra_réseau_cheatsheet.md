@@ -34,6 +34,10 @@
   * [dynamique](#natDyn)
 * [STP](#stp)
 * [VTP](#vtp)
+* [Etherchannel](#ether)
+  * [LACP](#lacp)
+  * [Pagp](#pagp
+* [HSRP](#hsrp)
 
 #### MODE <a id="nomAncre"></a>
 <a id="userMode"></a>
@@ -294,7 +298,26 @@ Les critères à prendre en compte pour déterminer ce switch :
 * `vtp domain +domain-name`
 * `vtp mode +{server | transparent | client }` le serve envoie, le client recoit se synchronise et transmet et le transparent ne fait rien. (transparent permet de faire des modifs vlan en local sans affecter les autres !).
 
+#### EtherChannel <a id="ether"></a>  
+* EtherChannel permet de faire de l'aggrégation de ports, càd considérer jusqu'à 8 liaison comme une seule (load-balancing, vitesse ++, ...).
+* Même si on pourrait croire que des ports agrégés n'ont pas besoin de configurations individuelles, c'est mieux de le faire en cas de comportements capricieux d'un appareil.
+* Plus souvent vu sur des switchs, il est possible de le faire sur entre un [routeur et un switch](http://www.cisco.com/c/en/us/support/docs/switches/catalyst-2950-series-switches/24042-158.html) ou [entre deux routeurs](https://learningnetwork.cisco.com/thread/33881)  
 
+##### LACP <a id="lacp"></a>
+* LACP est le standard en matière d'etherchannel >< Pagp qui est propriétaire cisco
+```
+interface port-channel 1
+	switchport trunk encapsulation dot1q
+	switchport mode trunk
+	switchport trunk native vlan 2
+interface range f0/10-11
+	channel-protocol lacp
+	channel-group 1 mode active
+	exit
+```
+##### PAGP <a id="pagp"></a>
+
+* propriétaire cisco, la configuration est sensiblement la même ... 
 
 
 
