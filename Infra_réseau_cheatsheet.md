@@ -1,3 +1,6 @@
+*Réalisé par M. Petit - N'hésitez pas à comparer cela avec d'autres doc histoire d'être sure que ce soit pas du bullshit, il est possible qu'il y ai des erreurs, si vous en voyez une hésitez pas à me prévenir <3*
+
+
 ### INFRASTRUCTURE RESEAU - NETWORK INFRASTRUCTURE
 #### Sommaire
 * [Mode de configuration](#confMode)
