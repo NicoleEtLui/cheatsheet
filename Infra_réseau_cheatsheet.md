@@ -36,7 +36,7 @@
 * [VTP](#vtp)
 * [Etherchannel](#ether)
   * [LACP](#lacp)
-  * [Pagp](#pagp
+  * [Pagp](#pagp)
 * [HSRP](#hsrp)
 
 #### MODE <a id="nomAncre"></a>
@@ -58,8 +58,8 @@
 
 <a id="lineMode"></a>
 * `Router(config-line)#` line configuration mode
-  * `login local` demande l'authentification par password lors d'une connection en local (directement sur la machine).
-  * `logging synchronous` synchronise les logs de cette ligne avec le terminal de la machine. Il est possible de régler le niveau de level des logs que l'on veut afficher
+  * `login local` demande l'authentification par password lors d'une connection en local (directement sur la machine via un cable console).
+  * `logging synchronous` synchronise les logs de cette ligne (vty ou console) avec le terminal de la machine. Il est possible de régler le niveau de level des logs que l'on veut afficher
   * `transport input ssh` voir [SSH](#ssh).
 
 <a id="interfaceMode"></a>
@@ -77,37 +77,40 @@
 <a id="routingMode"></a>
 * `Router(config-router)#` routing configuration mode.
   * `network +ip +wildcardMask` annonce un réseau connu en tant qu'information de routage.
-  * `passive-interface +interface` permet d'empêcher l'envoi d'information de routage sur li'nterface précisée. Ce sont énormément d'informations sur le réseaux qui sont transmises il est donc bon de réduire au maximum la portée de ces transmissions la où ce n'est pas nécessaire.
+  * `passive-interface +interface` permet d'empêcher l'envoi d'information de routage sur l'interface précisée. Ce sont énormément d'informations sur le réseaux qui sont transmises donc il est donc bon de réduire au maximum la portée de ces transmissions là où ce n'est pas nécessaire.
   * `redistribute` permet de transmettre les infos concernant un protocole différents ou des routes statiques. Plus de précision dans [routing](#routing).
 
 #### NETTOYAGE
 * `erase start-up config`
-* `delete vlan.dat` ou `delete flash:vlan.dat` ???
+* `delete vlan.dat` 
 
-#### IDENTITY <a id="identity"></a>
+<a id="identity"></a>
+#### IDENTITY 
 * `hostname` nom de la machine dans le domaine
 * `ip domain-name +nom-du-domaine` configure le nom du serveur dns, utiliser avec
 `ip name-server +ip` configure l'ip du serveur DNS.
 * `banner login #message#` Message qui apparaitra a la console si quelqu'un tente de se logger sur la machine, avant toute démarche de log. Il est possible d'utiliser n'importe quel caractère d'ouverture et de fermeture du message, ici '#'.
 * `username admin privilege 15 secret cisco` enregistre un utilisateur *admin* de privilege *15* ( le plus haut ) dont le mot de passe est *secret*.
 
-#### SECURITY  <a id="security"></a>
-> certaines commandes de sécurité (notamment pour ssh) ne sont accessibles qu'en activant une license (achetée a cisco bien sure), activable avec la commande 
-`license boot module +numModele technology-package securityk9`, après il faut `copy run start` et puis restrt la machine.
+<a id="security"></a>
+#### SECURITY  
+> certaines commandes de sécurité (notamment pour ssh) ne sont accessibles qu'en activant une license (achetée à cisco bien sure), activable avec la commande 
+`license boot module +numModele technology-package securityk9`, après il faut `copy run start` et puis restart la machine.
 
 * `enable password +pswd` oblige le controle d'un mot de passe pour entrer en mode de configuration privilégié. [Possible de passer en option un mot de passe encrypté mais seulement de type 5 ou déja encrypté par du matos cisco.](http://www.cisco.com/c/en/us/td/docs/ios/12_2/security/command/reference/fsecur_r/srfpass.html)
-* `enable secret +pswd` ajout une couche de sécurité en plus de `enable password` et annule le paswd configuré la possibilité d'utiliser le paswd de ce dernier !
-* `service password-encryption` ecnrypte les password, ils ne seront plus visibles en clair dans des `sh run` par exemple.
+* `enable secret +pswd` ajoute une couche de sécurité en plus de `enable password` et annule la possibilité d'utiliser le paswd configuré avec `enable password` !
+* `service password-encryption` encrypte les password, ils ne seront plus visibles en clair dans des `sh run` par exemple.
 
 ###### [interfaces](http://www.cisco.com/c/en/us/td/docs/switches/lan/catalyst6500/ios/12-2SX/configuration/guide/book/port_sec.pdf)
 
-* `switchport port-security` active les modifications de sécurité ! Si pas tapée, rien n'agit
-* `switchport port-security mac-adress +mac-adress` autorise une mac-adress sur cette interface
+* `switchport port-security` active les modifications de sécurité ! Si pas tapée, rien n'agit !
+* `switchport port-security mac-adress +mac-adress` autorise la mac-adress spécifiée à accéder à cette interface
 * `switchport port-security mac-adress sticky` autorise dynamiquement la mac-adress captée sur cette interface
 * `switchport port-security max +num` définit le nombre max de mac-adress gardé en mémoire, si le nombre est atteint, plus aucune adresse ne peut être autorisé de quelque manière que ce soit
 * `switchport port-security violation` définit le type de comportement en cas de violation
 
-#### SSH    <a id="ssh"></a>
+<a id="ssh"></a>
+#### SSH    
 ###### configuration globale
 `ip ssh version 2` Pretty clear ...
 
@@ -117,20 +120,23 @@ Génère une clé rsa de 2048 bit, le 2048 est a placé après !
 ###### configuration ligne vty
 `transport input ssh` n'autorise la connexion à cette ligne que via ssh.
 
-#### VLAN <a id=vlan></a>
-#### Création <a id=creation></a>
-* sur un switch (L2 ou L3), `vlan +num` entrer en mode de configuration de ce vlan ([voir configuration mode vlan](#confvlan)).
-
+<a id=vlan></a>
+#### VLAN 
+<a id=creation></a>
+#### Création 
+* sur un switch (L2 ou L3), `vlan +num` entrer en mode de configuration de ce vlan ([voir configuration mode vlan](#confvlan)).  
 * il peut être intéressant de créer un vlan "poubelle", dans lequel on mettra toutes les interfaces n'appartenant à aucun vlan.
-* il est bon de change le vlan natif (par défaut c'est le 1), mais ne pas désactiver le 1 car c'est par la que les premières attaques viendront. Et surtout c'est par le vlan 1 que STP passe.
+* il est bon de changer le vlan natif (par défaut c'est le 1), mais ne pas désactiver le 1 car c'est par la que les premières attaques viendront. Et surtout c'est par le vlan 1 que les paquets STP passent !!!
 * si l'interface de vlan est up-down, c'est qu'aucune interface réelle n'est incluse à ce vlan.
-* Chez cisco, tous les vlans sont par défaut autorisés sur les trunks. Seulement chez cisco !!
+* Chez cisco, tous les vlans sont par défaut autorisés sur les trunks. Seulement chez Cisco !!
 
-#### Routage inter-vlan <a id=intervlan></a>
-##### Sur un router <a id="subif"></a>
-###### Ip vlan <a id="ipvlan_1"></a>
-* Une sous interface par vlan, attention, l'encapsulation dot1q doit être faite avant pour qu'on puisse donner une ip a nos sous-interfaces
-`encapsulation dot1q +numVlan +[native]` 
+<a id=intervlan></a>
+#### Routage inter-vlan 
+<a id="subif"></a>
+##### Sur un router 
+<a id="ipvlan_1"></a>
+###### Ip vlan 
+* Une sous interface par vlan, attention, l'encapsulation dot1q doit être faite avant pour qu'on puisse donner une ip a nos sous-interfaces. `encapsulation dot1q +numVlan +[native]`. 
 ```
 interface f0/0.20
     encapsulation dot1q 20 
@@ -141,8 +147,9 @@ interface f0/0.30
     ip address 192.168.30.1 255.255.255.0
   ...
 ```
-###### mode access <a id="access_1"></a>
-* sur un switch L2 ou L3
+<a id="access_1"></a>
+###### mode access 
+* sur un switch L2 ou L3.
 
 ```
 Switch(config)#interface F0/1/1
@@ -150,18 +157,19 @@ Switch(config-interface)#switchport mode access
 Switch(config-interface)#switchport access vlan 20
 
 ```
-
-###### mode Trunk <a id="trunk_1"></a>
+<a id="trunk_1"></a>
+###### mode Trunk 
 
 ```
 Switch(config)#interface G0/2
 Switch(config-interface)#switchport mode trunk
 Switch(config-interface)#switchport trunk native vlan 50
 ```
-
-##### Sur un layer 3 <a id="vlanL3"></a>
-* il est important de désactiver la fonction de switching sur l'interface d'un L3 connecté à un autre routeur `(config-interface)#no switchport`.
-###### Ip vlan <a id="ipvlan_2"></a>
+<a id="vlanL3"></a>
+##### Sur un layer 3 
+* il est obligatoire de désactiver la fonction de switching sur l'interface d'un L3 connecté à un autre routeur `(config-interface)#no switchport`.
+<a id="ipvlan_2"></a>
+###### Ip vlan 
 * Comme un layer 3 possède plusieurs SVI (Switch Virtual Interface), on peut attribuer une ip par interface de VLAN.
 ```
 interface vlan 20
@@ -173,18 +181,22 @@ interface vlan 30
   ip address 192.168.30.254 255.255.255.0
   ...
 ```
-###### Access <a id="access_2"></a>
+<a id="access_2"></a>
+###### Access 
 * [Voir L2](#access_1)
-###### Trunk <a id="trunk_2"></a>
-* **Sur un L3**, il faut utiliser une ancienne commande pour configurer le trunk `switchport trunk encapsulation dot1q`, le reste est [pareil qu'avec un L2](#trunk_1)
+<a id="trunk_2"></a>
+###### Trunk 
+* **Sur un L3**, il faut utiliser une ancienne commande pour configurer le trunk `switchport trunk encapsulation dot1q`, le reste est [pareil qu'avec un L2](#trunk_1).
 
 
 
 
-
-#### ROUTING <a id="routing"></a>
-###### RIP <a id="RIP"></a>
-###### OSPF <a id="OSPF"></a>
+<a id="routing"></a>
+#### ROUTING
+<a id="RIP"></a>
+###### RIP
+<a id="OSPF"></a>
+###### OSPF 
 * `router ospf 1` ici le numéro de process n'a pas d'importance, il n'a qu'une portée locale (contrairement à EIGRP ou il désignera le numéro d'AS, Système Autonome).
 * Quand on déclare un réseau avec la commande ``network``, il est important de préciser l'area dans laquelle il se trouve. Ainsi pour des routeurs "interne" à une zone, on ne déclarera que des réseaux d'une même zone.
 Par contre un **ABR** (Area Border Router), déclarera des réseaux de plusieurs zone.
@@ -204,25 +216,29 @@ R4(config-router)# network 172.16.99.0 0.0.0.255 area 2
   * `range` résumé de route (ABR seulement)
 * `default-information originate` redistribue les informations concernant la route par défaut seulement (seulement si il s'en trouve une dans la table de routage).
 * `redistribute static subnets` permet de redistribuer de routes vers un un réseau (un ancien réseau par exemple, qui n'utiliserait pas OSPF mais relié à une zone OSPF) qu'elles soit classfull ou non.
-* `redistribue connected subnets` ??? comprends pas la différence avec la précédente et surtout ...
+* `redistribue connected subnets` ??? comprends pas la différence avec la précédente ...
 
 * en OSPF il peut-être interessant de définir un ID (pour l'élection DR-BDR) au moyen d'une interface de loopback, `interface l0`.
 * en mode privilégié, quelque commandes intéressantes :
   * `show ip route` table de routage
   * `show ip ospf neighbor` table de voisinage
 
-###### EIGRP <a id="EIGRP"></a>
-###### Vieux matos <a id="old"></a>
-
-#### DHCP <a id="dhcp"></a>
+<a id="EIGRP"></a>
+###### EIGRP 
+<a id="old"></a>
+###### Vieux matos 
+<a id="dhcp"></a>
+#### DHCP 
 * `ip dhcp pool +nom`
   * `network 192.168.0.0 255.255.255.0`
-  
-#### NAT <a id="nat"></a> 
+
+<a id="nat"></a>
+#### NAT  
 
 [NAT simplifiée](https://campus-virtuel.ephec.be/sites/2016_HE_T2032_9366_L2/_layouts/15/WopiFrame.aspx?sourcedoc=/sites/2016_HE_T2032_9366_L2/Documents/IRBP%20Semaine%2011/NAT%20version%20simplifi%C3%A9e/NAT_version%20du%207-12-2016.pdf&action=default)
 
-###### statique <a id="natSt"></a>
+<a id="natSt"></a>
+###### statique 
 
 * en statique on associe une adresse ip interne privée à une adresse publique, utile par exemple quand on a besoin d'atteindre un serveur toujours à la même adresse. 
 Il faut préciser sur le routeur NAT quel interface est en inside et quelle interface est en outside et puis déclarer la NAT proprement dite
@@ -238,8 +254,8 @@ ip nat outside
 ...
 ip nat inside source static 10.0.0.2 202.0.5.1
 ```
-
-###### dynamique <a id="natDyn"></a>
+<a id="natDyn"></a>
+###### dynamique 
 
 * PAT (surcharge de port, une seule ip publique)
 
@@ -265,7 +281,8 @@ ip nat pool TOTO 201.10.10.1 201.10.10.2 netmask 255.255.255.0
 ip nat inside source list 1 pool TOTO overload
 access-list 1 permit 10.0.0.0 0.0.0.255
 ```
-#### Spanning Tree Protocol <a id="stp"></a> 
+<a id="stp"></a>
+#### Spanning Tree Protocol  
 
 > [Spanning Tree Protocol (STP)] is a Layer 2 protocol that runs on bridges and switches.The main purpose of STP is to ensure that you do not create loops when you have redundant paths in your network. Loops are deadly to a network.
 
@@ -274,36 +291,37 @@ access-list 1 permit 10.0.0.0 0.0.0.255
 * besoin d'un switch référent, un switch "root" qui va être élu par les autres, point central du réseau (un ID plus petit est meilleur !). Toutes les décisions (port bloquant ou forwardant) sont prises en fonction de ce switch. **Chaque vlan doit avoir un root switch qu'il soit logique ou physique**
 Les critères à prendre en compte pour déterminer ce switch : 
   * centralisé
-  * fiable (pas une partie du réseua souvent perturbée)
+  * fiable (pas une partie du réseau souvent perturbée)
   * le moins influencé par des changements de topologie 
+  * en fonction des réglages [HSRP](#hsrp)
   
-* `monSwitch(config)#spanning-tree vlan 1 root primary` définit monSwitch comme switch root pour le vlan 1 (priorité de 8192 ???).
+* `monSwitch(config)#spanning-tree vlan 1 root primary` définit monSwitch comme switch root pour le vlan 1 (priorité de 8192).
 
 * `monSwitch(config)#spanning-tree vlan 1 priority 4096` définit la priorité du switch à 4096 (par défaut à 32768 et par pas de 4096).
 
-* `monSwitch(config)#spannig-tree portfast default` définit portfast sur tous les ports en mode access. ATTENTION : portfast met l'interface en mode forward sans attendre la convergence STP (utile par exemple en cas de DHCP ou le pc peut obtenir une ip avant la fin de la convergence stp) donc en cas de mauvais configuration des interfaces, des boucles de broadcast epuvent apparaitre.
+* `monSwitch(config)#spannig-tree portfast default` définit portfast sur tous les ports en mode access. ATTENTION : portfast met l'interface en mode forward sans attendre la convergence STP (utile par exemple en cas de DHCP ou le pc peut obtenir une ip avant la fin de la convergence STP) donc en cas de mauvais configuration des interfaces, des boucles de broadcast peuvent apparaitre.
 
 * `show spanning-tree` 
-
-#### Vlan Trunking Protocol <a id="vtp"></a> 
+<a id="vtp"></a>
+#### Vlan Trunking Protocol  
 
 > VLAN Trunk Protocol (VTP) reduces administration in a switched network. When you configure a new VLAN on one VTP server, the VLAN is distributed through all switches in the domain. This reduces the need to configure the same VLAN everywhere. VTP is a Cisco-proprietary protocol that is available on most of the Cisco Catalyst series products.
 
 **Par défaut, tous les switchs sont configuré comme VTP serveurs.**
 
-* tous les switchs doivent avori le même domaine vtp, faire tourner la même version de VTP et avoir le même mot de passe (si il y en a un).
+* tous les switchs doivent avoir le même domaine vtp, faire tourner la même version de VTP et avoir le même mot de passe (si il y en a un).
 
 * on peut configurer le vtp en mode de configuration de vlan ou en mode de configuration globale (ici en global).
 
 * `vtp domain +domain-name`
-* `vtp mode +{server | transparent | client }` le serve envoie, le client recoit se synchronise et transmet et le transparent ne fait rien. (transparent permet de faire des modifs vlan en local sans affecter les autres !).
-
-#### EtherChannel <a id="ether"></a>  
+* `vtp mode +{server | transparent | client }` le serve envoie, le client recoit se synchronise et transmet et le transparent ne fait rien. (transparent permet de faire des modifs vlan en local sans affecter les autres et remet le compteur de changement à zéro).
+<a id="ether"></a>
+#### EtherChannel   
 * EtherChannel permet de faire de l'aggrégation de ports, càd considérer jusqu'à 8 liaison comme une seule (load-balancing, vitesse ++, ...).
 * Même si on pourrait croire que des ports agrégés n'ont pas besoin de configurations individuelles, c'est mieux de le faire en cas de comportements capricieux d'un appareil.
-* Plus souvent vu sur des switchs, il est possible de le faire sur entre un [routeur et un switch](http://www.cisco.com/c/en/us/support/docs/switches/catalyst-2950-series-switches/24042-158.html) ou [entre deux routeurs](https://learningnetwork.cisco.com/thread/33881)  
-
-##### LACP <a id="lacp"></a>
+* Plus souvent vu sur des switchs, il est possible de le faire entre un [routeur et un switch](http://www.cisco.com/c/en/us/support/docs/switches/catalyst-2950-series-switches/24042-158.html) ou [entre deux routeurs](https://learningnetwork.cisco.com/thread/33881)  
+<a id="lacp"></a>
+##### LACP 
 * LACP est le standard en matière d'etherchannel >< Pagp qui est propriétaire cisco
 ```
 interface port-channel 1
@@ -316,15 +334,16 @@ interface range f0/10-11
 	exit
 ```
 * `mode active` est la solution safe pour être sure de l'état du port.
-##### PAGP <a id="pagp"></a>
+<a id="pagp"></a>
+##### PAGP 
 
 * propriétaire cisco, la configuration est sensiblement la même ... 
-
-#### HSRP <a id="hsrp"></a>
+<a id="hsrp"></a>
+#### HSRP 
 
 * Permet le regroupement de deux Switch physique en un switch logique (redondance, remplacement en cas de panne sans changer d'ip, ...).
-* Tout comme vtp,stp et consor, il y aura un switch "root" qui sera dit ACTIF, et l'autre sera en STANDBY? Et cela pour chaque vlan indépendamment (donc c'est pas d'office le même actif et le même passif en fonction du vlan).
-* Cisco considère qu'il est mieux de tout faire passer tout par un seul switch et de laisser l'autre en standby total. Schalkwijk estime qu'il y a plein de raison de ne pas faire comme ça (rien que le fait qu'on laisse un Layer 3 rien foutre alors que c'est du matos dingue en est une bonne).
+* Tout comme vtp,stp et consor, il y aura un switch "root" qui sera dit ACTIF, et l'autre sera en STANDBY. Et cela pour chaque vlan indépendamment (donc c'est pas d'office le même actif et le même passif en fonction du vlan #optimisation).
+* Cisco considère qu'il est mieux de tout faire passer par un seul switch et de laisser l'autre en standby total. Schalkwijk estime qu'il y a plein de raison de ne pas faire comme ça (rien que le fait qu'on laisse un Layer 3 rien foutre alors que c'est du matos dingue en est une bonne).
 
 ```
 ...
