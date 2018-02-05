@@ -56,11 +56,11 @@ la composition : `\begin{onehalfspace}...\end{onehalfspace}`
 ```
 
 ##### en-tête et pied de page 
-* le style plain : il permet d'insérer le numéro de page au milieu du pied de 
+* le style `plain` : il permet d'insérer le numéro de page au milieu du pied de 
 page ;
-* le style headings : il permet d'insérer le nom du chapitre et le numéro de 
+* le style `headings` : il permet d'insérer le nom du chapitre et le numéro de 
 page en en-tête. Le pied de page est vide ;
-* le style empty : l'en-tête et le pied de page sont vides.
+* le style `empty` : l'en-tête et le pied de page sont vides.
 
 * `\pagestyle{nom du style}`
 
