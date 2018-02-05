@@ -7,10 +7,7 @@
 * l'auteur `\author{les noms des auteurs}` 
 * la date `\date{la date que vous souhaitez}`
 
-__Ces trois éléments sont introduits avant la commande `\begin{document}`, et 
-une quatrième commande `\maketitle` se place juste après `\begin{document}` afin 
-de faire comprendre à LaTeX que vous souhaitez composer une page de garde avec 
-les trois éléments cités plus haut.__
+__Ces trois éléments sont introduits avant la commande `\begin{document}`, et une quatrième commande `\maketitle` se place juste après `\begin{document}` afin de faire comprendre à LaTeX que vous souhaitez composer une page de garde avec les trois éléments cités plus haut.__
 
 ##### marges 
 * `usepackage{layout}` récupération du package layout}
@@ -63,8 +60,8 @@ page ;
 page en en-tête. Le pied de page est vide ;
 * le style empty : l'en-tête et le pied de page sont vides.
 
-* `\pagestyle{nom du style}
-`
+* `\pagestyle{nom du style}`
+
 ##### en vrac
 * `\apendix` transforme chaitre en annexe ( d'autres modifications de 
 numerotation existent, voir `\frontmatter`, `\mainmatter`, `\backmatter` )
@@ -74,5 +71,5 @@ numerotation existent, voir `\frontmatter`, `\mainmatter`, `\backmatter` )
 * `*` en fin de mot permet de créer des parties, paragraphes, sections, ... sans
 numéro ex: `\chapter*{nom du chapitre}`
 
-* `\documentclass[option1, option2, option3]{type}` permet de gérer des choses
-tels que format du papier, taille de police, ...
+* `\documentclass[option1, option2, option3]{type}` permet de gérer des choses tels que format du papier, taille de police, ...
+![documentclass](./IMG/documentclass.PNG)
