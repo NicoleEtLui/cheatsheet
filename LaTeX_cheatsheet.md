@@ -15,6 +15,8 @@ __Ces trois éléments sont introduits avant la commande `\begin{document}`, et un
 * `usepackage{geometry}` permet de changer la taille des marges. 
 ex : `\usepackage[top=2cm, bottom=2cm, left=2cm, right=2cm]{geometry}`
 
+![marge et layout](./IMG/marge_layout.PNG)
+
 ##### interlignage
 * package `setspace`
 * mot clé `onehalfspace`, `doublehalfspace`, pour limiter cela à une partie de 
