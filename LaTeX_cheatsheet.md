@@ -72,4 +72,6 @@ numerotation existent, voir `\frontmatter`, `\mainmatter`, `\backmatter` )
 numéro ex: `\chapter*{nom du chapitre}`
 
 * `\documentclass[option1, option2, option3]{type}` permet de gérer des choses tels que format du papier, taille de police, ...
+
 ![documentclass](./IMG/documentclass.PNG)
+![documentclass](./IMG/documentclass_options.PNG)
