@@ -77,3 +77,16 @@ numéro ex: `\chapter*{nom du chapitre}`
 
 ![documentclass](./IMG/documentclass.PNG)
 ![documentclass](./IMG/documentclass_options.PNG)
+
+##### police
+* `\commande{texte}`
+![taille texte](./IMG/taille_ecriture.PNG)
+![forme texte](./IMG/taille_ecriture_b.PNG)
+* `\emph{text}` met en valeur le texte automatiquement selon le contexte du texte.
+* `\textcolor{couleur}{texte en couleur}` dont les couelurs de base sont black, white, red, green, blue, yellow, magenta et cyan.
+* `\definecolor` permet de définir une couleur perso à utiliser avec textcolor
+	* \definecolor{light-gray}{gray}{0.95}` ou gray est un nombre a deux décimales entre 0 et 1.
+	* `\definecolor{orange}{rgb}{1,0.5,0}`
+	* `\definecolor{orange}{RGB}{255,127,0}`
+	* `\definecolor{orange}{HTML}{FF7F00}`
+	* `\definecolor{orange}{cmyk}{0,0.5,1,0}`
